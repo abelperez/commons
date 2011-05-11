@@ -15,19 +15,23 @@
 package com.mindplex.commons.base;
 
 /**
- * A function that can be applied to a specific input.
- *  
+ * A function that can yield a result from executing against a specific
+ * input.
+ *
  * @author Abel Perez
  */
-public interface Function<T, E extends RuntimeException>
+public interface CallableFunction<T, R, E extends RuntimeException>
 {
     /**
-     * Executes this function against the specified {@code input}.
-     *  
+     * Returns a value from executing this function against the specified
+     * {@code input}.
+     *
      * @param input this functions input.
+     *
+     * @return the result of executing this function.
      * 
      * @throws E can occur if the specified input is in a state that is not
      * acceptable by this function.
      */
-    public void execute(T input) throws E;
+    public R execute(T input) throws E;
 }
