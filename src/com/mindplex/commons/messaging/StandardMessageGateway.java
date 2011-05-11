@@ -293,12 +293,14 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
             // First we create a temporary response queue
             // and set it as the replyTo destination of the
             // message we're sending.
+
             Queue responseDestination = getSession().createTemporaryQueue();
             message.setJMSReplyTo(responseDestination);
             
             // Secondly we create a new message producer,
             // assign it the supplied destination, and send off
             // the given message.
+
             MessageProducer producer = getSession().createProducer(destination);
             producer.send(message);
             producer.close();
@@ -307,12 +309,14 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
             // at the temporary destination we created.  If the
             // message does not arrive within the specified timeout
             // interval we bail.
+
             MessageConsumer receiver = createConsumer(responseDestination);
             Message response = receiver.receive(timeout);
 
             // Lastly, if the response did not timeout and the response
             // is not null, we convert the received text message into
             // a string message and return the message.
+
             if (isNull(response)) return null;
             TextMessage target = (TextMessage) response;
             return target.getText();
