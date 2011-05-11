@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.mindplex.commons.base.Check.*;
 
 /**
- * An {@code Element} that contains a value with a weight and a counter.
+ * A {@code Element} that contains a value with a weight and a counter.
  * 
  * @author Abel Perez
  */
