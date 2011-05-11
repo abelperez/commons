@@ -22,12 +22,12 @@ package com.mindplex.commons.base;
 public interface Function<T, E extends RuntimeException>
 {
     /**
-     * Executes this function against the specified {@code input}.
+     * Applies this function against the specified {@code input}.
      *  
      * @param input this functions input.
      * 
      * @throws E can occur if the specified input is in a state that is not
      * acceptable by this function.
      */
-    public void execute(T input) throws E;
+    public void apply(T input) throws E;
 }

@@ -33,5 +33,5 @@ public interface CallableFunction<T, R, E extends RuntimeException>
      * @throws E can occur if the specified input is in a state that is not
      * acceptable by this function.
      */
-    public R execute(T input) throws E;
+    public R apply(T input) throws E;
 }
