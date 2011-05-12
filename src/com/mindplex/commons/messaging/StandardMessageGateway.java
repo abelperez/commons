@@ -32,7 +32,7 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      * specified destination.
      */
     private MessageProducer producer;
-
+    
     /**
      * Constructs this {@code StandardMessageGateway} with the specified
      * destination as the default destination to send messages to.  The
@@ -71,7 +71,7 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      * target message broker.
      */
     public void send(String message) {
-        doSend(messageConverter.apply(message));
+        doSend(createMessage(message));
     }
 
     /**
@@ -85,7 +85,7 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      * target message broker.
      */
     public void send(String message, String destination) {
-        doSend(channelConverter.apply(destination), messageConverter.apply(message));
+        doSend(destinationConverter().apply(destination), createMessage(message));
     }
 
     /**
@@ -104,7 +104,7 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      * target message broker.
      */    
     public String request(String message, long timeout) {
-        return doSendAndListen(messageConverter.apply(message), getDestination(), timeout);
+        return doSendAndListen(createMessage(message), getDestination(), timeout);
     }
 
     /**
@@ -123,7 +123,7 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      * target message broker.
      */    
     public String request(String message, String destination, long timeout) {
-        return doSendAndListen(messageConverter.apply(message), channelConverter.apply(destination), timeout);
+        return doSendAndListen(createMessage(message), destinationConverter().apply(destination), timeout);
     }
 
     /**
@@ -142,7 +142,7 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      * target message broker.
      */    
     public String receive(String destination, long timeout) {
-        return doListen(channelConverter.apply(destination), timeout);    
+        return doListen(destinationConverter().apply(destination), timeout);    
     }
 
     /**
@@ -347,9 +347,9 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      */
     protected void verifyAlive() {
         if (! isConnectionValid()) {
-            // message broker connection must be broken
-            // lets rest everything.
-            init();
+            // Connection must be broken
+            // lets reinitialize everything.
+            initialize();
             resetProducer();
         }
     }
@@ -367,7 +367,7 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      */
     protected void restart() {
         close();
-        init();
+        initialize();
         resetProducer();
     }
 
