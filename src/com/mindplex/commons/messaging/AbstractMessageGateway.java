@@ -96,33 +96,30 @@ public abstract class AbstractMessageGateway implements MessageGateway
             closed.set(false);
 
         } catch (Exception exception) {
-            throw new IllegalStateException("Failed to initialize message gateway.");
+            throw new IllegalStateException("Failed to initialize message gateway.", exception);
         }
     }
     
     /**
      * Converts a {@code String} destination instance into a JMS {@code Destination}.
      *
+     * @param destination the string destination.
+     * 
      * @return a JMS {@code Destination}.
      *
      * @throws IllegalStateException can occur if the current JMS session is invalid.
      */
-    public CallableFunction<String, Destination, IllegalStateException> destinationConverter() {
+    public Destination createDestination(String destination) {
+        try {
+            // simply create a JMS Queue Destination and assign it
+            // the specified string destination.
+            return getSession().createQueue(destination);
 
-        return new CallableFunction<String, Destination, IllegalStateException>() {
-            public Destination apply(final String destination) throws IllegalStateException {
-                try {
-                    // simply create a JMS Queue Destination and assign it
-                    // the specified string destination.
-                    return getSession().createQueue(destination);
-
-                } catch (Exception exception) {
-                    throw new IllegalStateException("Failed to get convert string destination to jms destination.", exception);
-                }
-            }
-        };
+        } catch (Exception exception) {
+            throw new IllegalStateException("Failed to get convert string destination to jms destination.", exception);
+        }
     }
-
+    
     /**
      * Creates an empty JMS {@code Message}.
      *

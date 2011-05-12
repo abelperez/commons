@@ -85,7 +85,7 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      * target message broker.
      */
     public void send(String message, String destination) {
-        doSend(destinationConverter().apply(destination), createMessage(message));
+        doSend(createDestination(destination), createMessage(message));
     }
 
     /**
@@ -123,7 +123,7 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      * target message broker.
      */    
     public String request(String message, String destination, long timeout) {
-        return doSendAndListen(createMessage(message), destinationConverter().apply(destination), timeout);
+        return doSendAndListen(createMessage(message), createDestination(destination), timeout);
     }
 
     /**
@@ -142,7 +142,7 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      * target message broker.
      */    
     public String receive(String destination, long timeout) {
-        return doListen(destinationConverter().apply(destination), timeout);    
+        return doListen(createDestination(destination), timeout);    
     }
 
     /**
