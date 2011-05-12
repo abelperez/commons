@@ -28,10 +28,6 @@ public class FileUtils
      */
     private static enum JarFilter implements FileFilter {
         SoleInstance;
-
-        // Returns true if the specified file is
-        // a jar or directory.
-        
         public boolean accept(File file) {
             return notNull(file).getAbsolutePath().endsWith(".jar") || file.isDirectory();
         }
