@@ -18,7 +18,7 @@ import java.lang.IllegalStateException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.jms.*;
 
-import com.mindplex.commons.base.CallableFunction;
+import com.mindplex.commons.base.Function;
 import static com.mindplex.commons.base.Check.notEmpty;
 
 /**
@@ -36,7 +36,7 @@ import static com.mindplex.commons.base.Check.notEmpty;
  * @author Abel Perez
  */
 public abstract class AbstractMessageGateway implements MessageGateway
-{
+{    
     /**
      * An active connection this gateway uses to communicate with a JMS provider.
      */
@@ -89,7 +89,7 @@ public abstract class AbstractMessageGateway implements MessageGateway
     protected void initialize() {
         try {
             connection = MessagingFactory.getConnection();
-            connection.setExceptionListener(new GatewayExceptionListener(this));
+            connection.setExceptionListener(GatewayExceptionListener.of(this, getExceptionListenerFunction()));
             session = getConnection().createSession(false, Session.AUTO_ACKNOWLEDGE);
             destination = session.createQueue(destinationName);
             connection.start();
@@ -306,5 +306,35 @@ public abstract class AbstractMessageGateway implements MessageGateway
      */
     protected Destination getDestination() {
         return destination;
+    }
+
+    /**
+     * Gets a default function to apply against any {@code JMSException} received
+     * by this gateways registered {@code ExceptionListener}.The registered
+     * exception listener is a listener that is invoked asynchronously by the
+     * underlying JMS provider when a connection fails.
+     *
+     * @return a default function to apply against any {@code JMSException}
+     * received by this gateways registered {@code ExceptionListener}.
+     */
+    protected Function<JMSException, Object> getExceptionListenerFunction() {
+        return ExceptionListenerFunction.SoleInstance;
+    }
+
+    /**
+     * A singleton instance of a {@code Function} that wraps the specified exception
+     * in a GatewayException and re-throws it.
+     */
+    private static enum ExceptionListenerFunction implements Function<JMSException, Object> {
+
+        // singleton instance.
+        SoleInstance;
+
+        // Wraps the specified exception in a GatewayException
+        // and re-throw it.
+        
+        public Object apply(JMSException exception) {
+            throw new GatewayException("jms connection failed.", exception);
+        }
     }
 }
