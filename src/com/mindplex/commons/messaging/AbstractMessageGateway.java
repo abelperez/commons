@@ -40,7 +40,7 @@ public abstract class AbstractMessageGateway implements MessageGateway
     /**
      * The default channel to send invalid messages to.
      */
-    private static final String DEFAULT_INVALID_MESSAGE_CHANNEL = "";
+    private static final String DEFAULT_INVALID_MESSAGE_CHANNEL = "invalid.message.channel";
 
     /**
      * An active connection this gateway uses to communicate with a JMS provider.
@@ -78,12 +78,13 @@ public abstract class AbstractMessageGateway implements MessageGateway
     private String invalidMessageChannel = DEFAULT_INVALID_MESSAGE_CHANNEL;
     
     /**
-     * Constructs this {@code AbstractMessageGateway} with the specified default destination.
+     * Constructs this {@code AbstractMessageGateway} with the specified default
+     * destination.
      *  
      * @param destinationName the name of the default destination.
      *
-     * @throws IllegalStateException, IllegalArgumentException or NullPointerException if
-     * the specified argument is invalid or this gateway fails to open a connection
+     * @throws IllegalStateException, IllegalArgumentException or NullPointerException
+     * if the specified argument is invalid or this gateway fails to open a connection
      * to a JMS provider.
      */
     protected AbstractMessageGateway(String destinationName) {
