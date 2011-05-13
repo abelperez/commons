@@ -119,4 +119,17 @@ public interface MessageGateway
      * @return the next available message or {@code null}.
      */
     public String receive(String destination, long timeout);
+
+    /**
+     * Rejects the specified message by sending it to this gateways invalid
+     * message channel.
+     *
+     * <p>Message consumers that receive improper messages should reject the
+     * message by sending it to an invalid message channel. This allows the
+     * messaging system to become aware of messages that might be floating
+     * around as the result of a bug or misconfiguration.
+     *
+     * @param message the message to reject.
+     */
+    public void reject(String message);
 }
