@@ -334,7 +334,7 @@ public abstract class AbstractMessageGateway implements MessageGateway
         // and re-throw it.
         
         public Object apply(JMSException exception) {
-            throw new GatewayException("jms connection failed.", exception);
+            throw new GatewayException("messaging provider connection failed.", exception);
         }
     }
 }
