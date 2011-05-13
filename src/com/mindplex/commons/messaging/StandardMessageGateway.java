@@ -22,11 +22,13 @@ import static com.mindplex.commons.base.Check.*;
 /**
  * A {@code StandardMessageGateway} that supports operations for sending
  * and receiving messages.  
- *  
+ *
+ * todo add support for session modes i.e., auto ack, transacted.
+ * 
  * @author Abel Perez
  */
 public class StandardMessageGateway extends AbstractMessageGateway implements MessageGateway
-{
+{    
     /**
      * The message producer this gateway uses to send messages to a
      * specified destination.
@@ -85,7 +87,7 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      * target message broker.
      */
     public void send(String message, String destination) {
-        doSend(createDestination(destination), createMessage(message));
+        doSend(createMessage(message), createDestination(destination));
     }
 
     /**
@@ -146,6 +148,20 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
     }
 
     /**
+     * Rejects the specified {@code message} by sending it to this gateways
+     * pre-configured invalid message channel.
+     *  
+     * @param message the message to reject.
+     *
+     * @throws RuntimeException can occur if the specified message is not
+     * valid or this gateway encounters an error communicating with the
+     * target message broker.
+     */
+    public void reject(String message) {
+        doSend(createMessage(notEmpty(message)), createDestination(getInvalidMessageChannel()));
+    }
+
+    /**
      * @see StandardMessageGateway#send(String)
      *  
      * @param message the JMS message to send.
@@ -163,11 +179,11 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
 
     /**
      * @see StandardMessageGateway#send(String, String)
-     *  
+     *
+     * @param message the JMS message to send. 
      * @param destination the JMS Destination to send the specified message to.
-     * @param message the JMS message to send.
      */
-    protected void doSend(Destination destination, Message message) {
+    protected void doSend(Message message, Destination destination) {
         try {
             verifyAlive();
 

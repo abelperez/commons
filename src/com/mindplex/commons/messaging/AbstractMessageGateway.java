@@ -38,6 +38,11 @@ import static com.mindplex.commons.base.Check.notEmpty;
 public abstract class AbstractMessageGateway implements MessageGateway
 {    
     /**
+     * The default channel to send invalid messages to.
+     */
+    private static final String DEFAULT_INVALID_MESSAGE_CHANNEL = "";
+
+    /**
      * An active connection this gateway uses to communicate with a JMS provider.
      */
     private Connection connection;
@@ -64,6 +69,14 @@ public abstract class AbstractMessageGateway implements MessageGateway
      */
     private AtomicBoolean closed = new AtomicBoolean(true);
 
+    /**
+     * This is the destination that message consumers send the improper messages
+     * they receive. By improper we refer to messages that make no sense to
+     * the receiver. If no channel is defined when this gateway is initialized
+     * then messages are sent to the default invalid message channel.
+     */
+    private String invalidMessageChannel = DEFAULT_INVALID_MESSAGE_CHANNEL;
+    
     /**
      * Constructs this {@code AbstractMessageGateway} with the specified default destination.
      *  
@@ -308,6 +321,15 @@ public abstract class AbstractMessageGateway implements MessageGateway
         return destination;
     }
 
+    /**
+     * Gets the channel that invalid messages are sent to.
+     * 
+     * @return the channel that invalid messages are sent to.
+     */
+    protected String getInvalidMessageChannel() {
+        return invalidMessageChannel;
+    }
+    
     /**
      * Gets a default function to apply against any {@code JMSException} received
      * by this gateways registered {@code ExceptionListener}.The registered
