@@ -330,7 +330,17 @@ public abstract class AbstractMessageGateway implements MessageGateway
     protected String getInvalidMessageChannel() {
         return invalidMessageChannel;
     }
-    
+
+    /**
+     * Gets the channel that invalid messages are sent to.
+     *
+     * @param invalidMessageChannel the invalid message channel that messages
+     * are sent to.
+     */
+    protected void setInvalidMessageChannel(String invalidMessageChannel) {
+        this.invalidMessageChannel = notEmpty(invalidMessageChannel);    
+    }
+
     /**
      * Gets a default function to apply against any {@code JMSException} received
      * by this gateways registered {@code ExceptionListener}.The registered
