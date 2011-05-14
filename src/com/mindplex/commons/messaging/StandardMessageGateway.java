@@ -34,7 +34,12 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      * specified destination.
      */
     private MessageProducer producer;
-    
+
+    /**
+     * A message producer that is exclusively used for sending invalid messages.
+     */
+    private MessageProducer invalidMessageProducer;
+
     /**
      * Constructs this {@code StandardMessageGateway} with the specified
      * destination as the default destination to send messages to.  The
@@ -46,6 +51,8 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
     private StandardMessageGateway(String destination) {
         super(destination);
         producer = createProducer();
+        invalidMessageProducer = createProducer(createDestination(getInvalidMessageChannel()));
+
     }
 
     /**
@@ -158,7 +165,7 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
      * target message broker.
      */
     public void reject(String message) {
-        doSend(createMessage(notEmpty(message)), createDestination(getInvalidMessageChannel()));
+        doSendInvalidMessage(createMessage(notEmpty(message)));
     }
 
     /**
@@ -198,6 +205,22 @@ public class StandardMessageGateway extends AbstractMessageGateway implements Me
         } catch (Exception exception) {
             destroy();
             throw new IllegalStateException("Failed to send message.", exception);
+        }
+    }
+
+    /**
+     * @see StandardMessageGateway#send(String)
+     *
+     * @param message the JMS message to send.
+     */
+    protected void doSendInvalidMessage(Message message) {
+        try {
+            verifyAlive();
+            invalidMessageProducer.send(message);
+
+        } catch (Exception exception) {
+            destroy();
+            throw new IllegalStateException("Failed to send invalid message.");
         }
     }
 
