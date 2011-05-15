@@ -22,7 +22,7 @@ import com.mindplex.commons.base.Clock;
 import com.mindplex.commons.base.Saver;
 
 /**
- * A {@code FileSaver} that saves data to dynamically generated file.
+ * A {@code FileSaver} that saves data to dynamically generated files.
  * 
  * @author Abel Perez
  */
@@ -85,8 +85,7 @@ public class FileSaver implements Saver<String, IOException>
      */
     public String directory() {
         File base = FileUtils.makeDir(directory);
-        File curr = FileUtils.append(base, Clock.today());
-        return curr.getAbsolutePath();
+        return FileUtils.append(base, Clock.today()).getAbsolutePath();
     }
 
     /**
