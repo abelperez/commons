@@ -102,7 +102,7 @@ public class FileFilterUtils
          * extension; otherwise {@code false}.
          */
         public boolean accept(File file) {
-            return notNull(file).getAbsolutePath().endsWith(extension);
+            return notNull(file).toString().endsWith(extension);
         }
     }    
 }
