@@ -29,27 +29,6 @@ import com.mindplex.commons.base.Clock;
 public class FileUtils
 {    
     /**
-     * A {@code FileFilter} that filters for Jar files. Note this filter
-     * considers directories to be equivalent to jar files, since it's
-     * possible that the filtering is to determine a classpath.
-     *
-     * @return {@code FileFilter} that filters for Jar files.
-     */
-    public static JarFilter jarFilter() {
-        return JarFilter.SoleInstance;    
-    }
-
-    /**
-     * Singleton instance of {@code JarFilter}.
-     */
-    private static enum JarFilter implements FileFilter {
-        SoleInstance;
-        public boolean accept(File file) {
-            return notNull(file).getAbsolutePath().endsWith(".jar") || file.isDirectory();
-        }
-    }
-    
-    /**
      * Returns {@code true} if the specified file/directory is deleted;
      * otherwise {@code false}.
      * 
