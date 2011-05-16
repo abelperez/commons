@@ -20,14 +20,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.mindplex.commons.base.Check.*;
-import com.mindplex.commons.base.Clock;
 
 /**
  * 
  * @author Abel Perez
  */
 public class FileUtils
-{    
+{
     /**
      * Returns {@code true} if the specified file/directory is deleted;
      * otherwise {@code false}.
@@ -112,6 +111,31 @@ public class FileUtils
         // return true if the specified directory
         // is truly a directory otherwise false.
         return file.isDirectory();
+    }
+
+    /**
+     * Ensures the specified path is a directory, by checking if it already
+     * exists or trying to create it if it doesn't.
+     *
+     * @param path the path to ensure is a directory.
+     *
+     * @throws IllegalArgumentException can occur if the specified directory is
+     * a file or there was an error trying to create the directory.
+     */
+    public static void ensureDir(String path) throws IllegalArgumentException {
+
+        File dir = new File(path);
+
+        if (dir.isDirectory()) {
+            return;
+
+        } else if (dir.exists()) {
+            throw new IllegalArgumentException(path + " exists, but is not a directory.");
+        }
+
+        if (!dir.mkdirs()) {
+            throw new IllegalArgumentException("Failed to make directories: " + path);
+        }
     }
 
     /**
