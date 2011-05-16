@@ -36,17 +36,15 @@ public class FileScanner extends Observable
     public void scan(File file, boolean includeDirectories) {
 
         if (file.isDirectory()) {
-
-            // found directory, if directories
-            // included, we change state and notify.
-            // observers.
             if (includeDirectories) {
+
+                // found directory, change state and notify
+                // observers.
                 setChanged();
                 notifyObservers(file);
             }
 
-            // lets recursively scan sub
-            // directories.
+            // recursively scan sub directories.
             String[] files = file.list();
             if (files != null) {
                 for (String child : files) {
@@ -55,8 +53,7 @@ public class FileScanner extends Observable
             }
             
         } else {
-            // if the specified file is
-            // indeed a file we change state and notify
+            // found file, change state and notify
             // observers.
             setChanged();
             notifyObservers(file);
