@@ -63,12 +63,160 @@ public class AdvancedList<E> implements Iterable<E>
         
         return result;
     }
+
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Element retreival
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
+
+    /**
+     *
+     * @return
+     */
+    public E head() {
+        if (elements.isEmpty()) {
+            throw new NoSuchElementException("head of empty list");
+        }
+        return elements.get(0);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public E last() {
+        if (elements.isEmpty()) {
+            throw new NoSuchElementException("head of empty list");
+        }
+        return elements.get(elements.size()-1);
+    }
+
+    /**
+     * 
+     * @param predicate
+     * @return
+     */
+    public E find(Function<E, Boolean> predicate) {
+        for (E element : elements) {
+            if (predicate.apply(element)) {
+                return element;
+            }
+        }
+        return null;
+    }
     
     /*
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      Subcollections
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
+
+    /**
+     *
+     * @return
+     */
+    public List<E> tail() {
+        if (elements.isEmpty()) {
+            throw new UnsupportedOperationException("tail of empty list");
+        }
+        
+        List<E> result = new ArrayList<E>();
+        for (E element : elements) {
+            result.add(element);
+        }
+        result.remove(0);
+        return result;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<E> init() {
+        if (elements.isEmpty()) {
+            throw new UnsupportedOperationException("tail of empty list");
+        }
+
+        List<E> result = new ArrayList<E>();
+        for (E element : elements) {
+            result.add(element);
+        }
+        result.remove(elements.size()-1);
+        return result;
+    }
+
+
+    /**
+     * 
+     * @param from
+     * @param to
+     * @return
+     */
+    public List<E> slice(int from, int to) {
+        if (from > elements.size()) {
+            return new ArrayList<E>();
+        }
+
+        List<E> result = new ArrayList<E>();
+
+        if (to > elements.size()) {
+            to = elements.size();
+        }
+
+        for (int i = from; i < to; i++) {
+            result.add(elements.get(i));
+        }
+        
+        return result;
+    }
+
+    /**
+     * 
+     * @param n
+     * @return
+     */
+    public List<E> take(int n) {
+        if (n > elements.size()) {
+            n = elements.size();
+        }
+
+        if (n < 1) {
+            return new ArrayList<E>();
+        }
+        
+        List<E> result = new ArrayList<E>();
+
+        for (int i = 0; i < n; i++) {
+            result.add(elements.get(i));
+        }
+
+        return result;
+    }
+
+/**
+     *
+     * @param n
+     * @return
+     */
+    public List<E> drop(int n) {
+        if (n > elements.size()) {
+            return new ArrayList<E>();
+        }
+
+        if (n < 1) {
+            return elements;
+        }
+
+        List<E> result = new ArrayList<E>();
+
+        for (int i = n; i < elements.size(); i++) {
+            result.add(elements.get(i));
+        }
+
+        return result;
+    }
+
 
     /**
      * 
