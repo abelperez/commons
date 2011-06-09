@@ -23,6 +23,12 @@ public class AdvancedList<E> implements Iterable<E>
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
 
+    /**
+     * 
+     * @param func
+     * @param <R>
+     * @return
+     */
     public <R> List<R> map(Function<E, R> func) {
 
         List<R> result = new ArrayList<R>();
@@ -34,14 +40,27 @@ public class AdvancedList<E> implements Iterable<E>
         return result;
     }
 
-    public String flatMap(Function<E, String> func) {
+    /**
+     * 
+     * @param func
+     * @param <R>
+     * @return
+     */
+    public <R> List<R> flatMap(Function<E, List<R>> func) {
 
-        String result = "";
+        List<List<R>> temp = new ArrayList<List<R>>();
+        List<R> result = new ArrayList<R>();
 
         for (E element : elements) {
-            result += func.apply(element);
+            temp.add(func.apply(element));
         }
 
+        for (List<R> list : temp) {
+            for (R r : list) {
+                result.add(r);
+            }
+        }
+        
         return result;
     }
     
