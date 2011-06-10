@@ -10,7 +10,7 @@ import java.util.*;
  * 
  * @author Abel Perez
  */
-public class AdvancedList<E> implements Iterable<E>
+public class AdvancedList<E> implements List<E> //, Iterable<E>
 {
     /**
      *
@@ -373,7 +373,7 @@ public class AdvancedList<E> implements Iterable<E>
      */
     public List<E> reverse() {
         List<E> reverse = new ArrayList<E>();
-        for (int i = elements.size(); i >= 0; i--) {
+        for (int i = elements.size()-1; i >= 0; i--) {
             reverse.add(elements.get(i));
         }
         return reverse;
@@ -601,9 +601,8 @@ public class AdvancedList<E> implements Iterable<E>
      * @param value
      * @return
      */
-    public AdvancedList<E> add(E value) {
-        elements.add(value);
-        return this;
+    public boolean add(E value) {
+        return elements.add(value);
     }
 
     /**
@@ -612,34 +611,8 @@ public class AdvancedList<E> implements Iterable<E>
      * @return
      */
     public AdvancedList<E> set(E value) {
-        return add(value);
-    }
-
-    /**
-     *
-     * @param element
-     * @return
-     */
-    public boolean remove(E element) {
-        return elements.remove(element);
-    }
-
-    /**
-     *
-     * @param es
-     * @return
-     */
-    public boolean removeAll(Collection<E> es) {
-        return elements.removeAll(es);
-    }
-
-    /**
-     *
-     * @param es
-     * @return
-     */
-    public boolean retainAll(Collection<E> es) {
-        return elements.retainAll(es);
+        add(value);
+        return this;
     }
 
     /**
@@ -649,24 +622,6 @@ public class AdvancedList<E> implements Iterable<E>
      */
     public E get(int index) {
         return elements.get(index);
-    }
-
-    /**
-     *
-     * @param element
-     * @return
-     */
-    public boolean contains(E element) {
-        return elements.contains(element);
-    }
-
-    /**
-     *
-     * @param es
-     * @return
-     */
-    public boolean containsAll(Collection<E> es) {
-        return elements.containsAll(es);
     }
 
     /**
@@ -843,5 +798,126 @@ public class AdvancedList<E> implements Iterable<E>
         public Iterator<List<E>> iterator() {
             return this;
         }
-    }    
+       
+    }
+    ///
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean contains(Object element) {
+        return elements.contains(element);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] toArray() {
+        return elements.toArray();
+    }
+
+    /**
+     * {@inheritDoc}
+     */    
+    public <T> T[] toArray(T[] elements) {
+        return this.elements.toArray(elements);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean remove(Object element) {
+        return elements.remove(element);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean containsAll(Collection<?> elements) {
+        return this.elements.containsAll(elements);
+    }
+
+    /**
+     * {@inheritDoc}
+     */    
+    public boolean addAll(Collection<? extends E> elements) {
+        return this.elements.addAll(elements);
+    }
+
+    /**
+     * {@inheritDoc}
+     */    
+    public boolean addAll(int i, Collection<? extends E> elements) {
+        return this.elements.addAll(i, elements);
+    }
+
+    /**
+     * {@inheritDoc}
+     */    
+    public boolean removeAll(Collection<?> elements) {
+        return this.elements.removeAll(elements);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean retainAll(Collection<?> elements) {
+        return this.elements.retainAll(elements);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public E set(int i, E element) {
+        return elements.set(i, element);
+    }
+
+    /**
+     * {@inheritDoc}
+     */    
+    public void add(int i, E element) {
+        elements.add(i, element);
+    }
+
+    /**
+     * {@inheritDoc}
+     */    
+    public E remove(int i) {
+        return elements.remove(i);
+    }
+
+    /**
+     * {@inheritDoc}
+     */    
+    public int indexOf(Object element) {
+        return elements.indexOf(element);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int lastIndexOf(Object element) {
+        return elements.lastIndexOf(element);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ListIterator<E> listIterator() {
+        return elements.listIterator();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ListIterator<E> listIterator(int i) {
+        return elements.listIterator(i);
+    }
+
+    /**
+     * {@inheritDoc} 
+     */
+    public List<E> subList(int start, int end) {
+        return elements.subList(start, end);
+    }
 }
