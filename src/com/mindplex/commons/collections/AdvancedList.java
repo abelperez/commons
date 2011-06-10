@@ -5,12 +5,12 @@ import com.mindplex.commons.base.Function;
 import java.util.*;
 
 /**
- * This AdvancedList is modeled after the Scala <code>trait <em>Iterable</em></code>.
+ * This AdvancedList is modeled after several idioms from the Scala Collections API.
  * A {@link "http://www.scala-lang.org/docu/files/collections-api/collections_4.html"}
  * 
  * @author Abel Perez
  */
-public class AdvancedList<E> implements List<E> //, Iterable<E>
+public class AdvancedList<E> implements List<E>
 {
     /**
      *
