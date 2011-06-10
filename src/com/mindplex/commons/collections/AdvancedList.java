@@ -363,10 +363,231 @@ public class AdvancedList<E> implements Iterable<E>
 
     /*
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     List Operations
+     Reversal Operations
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     */
 
+    /**
+     * 
+     * @return
+     */
+    public List<E> reverse() {
+        List<E> reverse = new ArrayList<E>();
+        for (int i = elements.size(); i >= 0; i--) {
+            reverse.add(elements.get(i));
+        }
+        return reverse;
+    }
+
+    public Iterator<E> reverseIterator() {
+        return new Iterator<E>() {
+
+            private int size = elements.size();
+            private int index = size - 1;
+
+            public boolean hasNext() {
+                if (elements.size() != size) {
+                    throw new ConcurrentModificationException();
+                }
+                return (index < size && index >= 0);
+            }
+
+            public E next() {
+                if (index > size() || index < 0) {
+                    throw new NoSuchElementException("next on empty iterator");
+                }
+                E result = elements.get(index);
+                index--;
+                return result;
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    public <R> List<R> reverseMap(Function<E, R> func) {
+
+        List<R> result = new ArrayList<R>();
+
+        for (E element : reverse()) {
+            result.add(func.apply(element));
+        }
+
+        return result;
+    }
+    
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Comparison Operations
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
+
+    /**
+     * 
+     * @param elements
+     * @return
+     */
+    public boolean startsWith(List<E> elements) {
+        if (elements.isEmpty()) {
+            return false;
+        }
+        
+        for (int i = 0; i < elements.size(); i++) {
+            if (! this.elements.get(i).equals(elements.get(i))) return false;
+        }
+        return true;
+    }
+
+    /**
+     * 
+     * @param elements
+     * @return
+     */
+    public boolean endsWith(List<E> elements) {
+
+        if (elements.isEmpty()) {
+            return false;
+        }
+        
+        int index = this.elements.size() - elements.size();
+        if (index < 0) {
+            return false;
+        }
+
+        int count = 0;
+        for (int i = index; i < this.elements.size(); i++) {
+            if (! this.elements.get(i).equals(elements.get(count))) {
+                return false;
+            }
+            count++;
+        }
+        return true;
+    }
+
+    /*
+    public boolean containsSlice(List<E> elements) {
+
+        if (elements.isEmpty()) {
+            return false;
+        }
+        
+        E first = elements.get(0);
+        
+    }
+    */
+    
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Strings
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
+
+    /**
+     *
+     * @param sb
+     * @return
+     */
+    public String addString(StringBuilder sb) {
+        for (E element : elements) {
+            sb.append(element);
+        }
+        return sb.toString();
+    }
+
+    /**
+     *
+     * @param sb
+     * @param separator
+     * @return
+     */
+    public String addString(StringBuilder sb, String separator) {
+        int count = elements.size() - 1;
+        for (E element : elements) {
+            sb.append(element);
+            if (count > 0) {
+                sb.append(separator);
+            }
+            count--;
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 
+     * @param sb
+     * @param start
+     * @param separator
+     * @param end
+     * @return
+     */
+    public String addString(StringBuilder sb, String start, String separator, String end) {
+
+        sb.append(start);
+
+        int count = elements.size() - 1;
+        for (E element : elements) {
+            sb.append(element);
+            if (count > 0) {
+                sb.append(separator);
+            }
+            count--;
+        }
+
+        sb.append(end);
+        return sb.toString();
+    }
+
+    /**
+     * 
+     * @param separator
+     * @return
+     */
+    public String mkString(String separator) {
+        StringBuilder buffer = new StringBuilder();
+
+        int count = elements.size() - 1;
+        for (E element : elements) {
+            buffer.append(element);
+            if (count > 0) {
+                buffer.append(separator);
+            }
+            count--;
+        }
+        return buffer.toString();
+    }
+
+    /**
+     *
+     * @param start
+     * @param separator
+     * @param end
+     * @return
+     */
+    public String mkString(String start, String separator, String end) {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(start);
+        
+        int count = elements.size() - 1;
+        for (E element : elements) {
+            buffer.append(element);
+            if (count > 0) {
+                buffer.append(separator);
+            }
+            count--;
+        }
+
+        buffer.append(end);
+        return buffer.toString();
+    }
+
+    /*
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     List Operations
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    */
+    
     /**
      * 
      * @return
